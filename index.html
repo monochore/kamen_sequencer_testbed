@@ -1045,7 +1045,6 @@ function selectLane(v) {
     activeTrack = v;
     document.querySelectorAll('.v-sel').forEach(b => b.classList.toggle('active', parseInt(b.dataset.v) === v));
     if (modMode) {
-        // Focus first active step on the newly selected lane (if any)
         const offset = viewPage * 16;
         editingStep = null;
         for (let i = 0; i < 16; i++) {
@@ -1067,14 +1066,7 @@ function syncKnobsToEditState() {
             const locks = seqTracks[activeTrack][editingStep].locks;
             if (locks[k.id] !== undefined) {
                 k.classList.add('plocked');
-                setKnobVisual(k, locks[k.id]);
-            } else {
-                setKnobVisual(k, baseParams[k.id]);
             }
-        } else {
-            setKnobVisual(k, baseParams[k.id]);
-            liveParams[k.id] = baseParams[k.id];
-            sendParam(k.id, baseParams[k.id]);
         }
     });
 }
@@ -1293,7 +1285,6 @@ function applyTargetParam(kId, targetVal, isLocked) {
 function advanceSequencer() {
     if (!seqOn) return;
 
-    let anyTrig = false;
     let combinedLocks = {};
 
     for (let l = 0; l < 4; l++) {
@@ -1301,30 +1292,18 @@ function advanceSequencer() {
         const stepObj = seqTracks[l][playSteps[l]];
 
         if (stepObj.trig) {
-            anyTrig = true;
-            // 1. Fire the lane's built-in DSP liturgical articulation pulse!
             if (kamenNode) {
                 kamenNode.port.postMessage({ type: 'lane_pulse', lane: l });
             }
-            // 2. Collect any parameter locks on this lane's step (any lane can control any dial)
             for (let kId in stepObj.locks) {
                 combinedLocks[kId] = stepObj.locks[kId];
             }
         }
     }
 
-    // Apply collected parameter locks across the machine
+    // Only move dials that have an explicit MOD lock on this step
     for (let kId in combinedLocks) {
         applyTargetParam(kId, combinedLocks[kId], true);
-    }
-
-    // If HOLD is OFF (REV mode) and no active step is locking a parameter on this tick, revert unlocked dials to baseParams
-    if (!holdMode) {
-        for (let pId of allSynthParams) {
-            if (combinedLocks[pId] === undefined) {
-                applyTargetParam(pId, baseParams[pId], false);
-            }
-        }
     }
 
     renderAsciiLanes();
