@@ -51,15 +51,15 @@
     .col-sanc .knob-bg   { stroke: var(--c-cyan); }    .col-sanc .knob-label   { color: var(--c-cyan); }
     .col-fak .knob-bg    { stroke: var(--c-green); }   .col-fak .knob-label    { color: var(--c-green); }
 
-    /* POLYMETRIC ALTAR SEQUENCER SHELF */
+    /* IMMERSIVE ASCII SCANLINE SEQUENCER & VOTIVE ALTAR SHELF */
     #seq-shelf {
         border-top: 1px solid var(--col-div);
         margin: 0 6px;
-        padding: 12px 12px 6px 12px;
+        padding: 10px 12px 6px 12px;
         display: flex;
         flex-direction: column;
-        gap: 9px;
-        background: rgba(0,0,0,0.38);
+        gap: 6px;
+        background: rgba(0,0,0,0.42);
     }
     .seq-bar {
         display: flex;
@@ -102,7 +102,13 @@
         background: var(--c-green);
         border-color: var(--c-green);
         color: #000;
-        box-shadow: 0 0 10px rgba(0,255,68,0.5);
+        box-shadow: 0 0 10px rgba(0,255,68,0.45);
+    }
+    #btn-mod-mode.active {
+        background: var(--c-red);
+        border-color: var(--c-red);
+        color: #000;
+        box-shadow: 0 0 12px var(--c-red);
     }
     #btn-hold-mode.active {
         background: var(--c-amber);
@@ -111,64 +117,101 @@
     }
     #btn-len { cursor: ns-resize; touch-action: none; }
 
-    .seq-steps {
-        display: grid;
-        grid-template-columns: repeat(16, 1fr);
-        gap: 5px;
+    /* UNIFIED ASCII ALTAR + 4-LANE SCANLINE MATRIX */
+    #altar-matrix-wrap {
         width: 100%;
-    }
-    .step-btn {
-        height: 34px;
-        background: #0a0a0a;
-        border: 1px solid #333;
-        position: relative;
-        cursor: pointer;
+        background: #040404;
+        border: 1px solid #262626;
+        padding: 4px 6px 2px 6px;
+        box-sizing: border-box;
         display: flex;
         flex-direction: column;
-        align-items: center;
-        justify-content: space-between;
-        padding: 3px 0;
-        box-sizing: border-box;
-        transition: border-color 0.05s, background 0.05s, opacity 0.1s;
+        gap: 2px;
+        box-shadow: inset 0 0 25px rgba(0,0,0,0.95);
     }
-    .step-btn:nth-child(4n+1) { border-left: 2px solid #666; }
-    .step-btn:hover { border-color: #777; }
-    .step-btn.out-of-bounds { opacity: 0.25; background: #050505; border-style: dashed; }
-    .step-num { font-size: 8px; color: #555; letter-spacing: 0.5px; line-height: 1; }
-    .step-led { width: 12px; height: 3px; background: #222; transition: 0.05s; }
-    .step-plock-ind { width: 5px; height: 5px; border-radius: 50%; background: transparent; }
+    .ascii-lanes {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        border-bottom: 1px dashed #222;
+        padding-bottom: 3px;
+    }
+    .ascii-lane-row {
+        display: grid;
+        grid-template-columns: 28px repeat(16, 1fr) 36px;
+        align-items: center;
+        height: 15px;
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 11px;
+        letter-spacing: 0px;
+    }
+    .ascii-lane-row.selected-lane {
+        background: rgba(255,255,255,0.04);
+    }
+    .lane-tag {
+        font-weight: bold;
+        cursor: pointer;
+        padding-left: 3px;
+        font-size: 10px;
+    }
+    .lane-len-tag {
+        font-size: 9px;
+        color: #666;
+        text-align: right;
+        padding-right: 3px;
+        cursor: ns-resize;
+    }
+    .ascii-cell {
+        text-align: center;
+        cursor: pointer;
+        color: #333;
+        font-weight: bold;
+        line-height: 15px;
+        transition: color 0.05s, text-shadow 0.05s;
+        user-select: none;
+    }
+    .ascii-cell:nth-child(4n+2) {
+        border-left: 1px solid #1c1c1c;
+    }
+    .ascii-cell:hover {
+        color: #999;
+        background: rgba(255,255,255,0.05);
+    }
+    .ascii-cell.out-bounds {
+        opacity: 0.18;
+    }
+    .ascii-cell.trig-on[data-l="0"] { color: var(--c-neutral); text-shadow: 0 0 6px var(--c-neutral); }
+    .ascii-cell.trig-on[data-l="1"] { color: var(--c-amber);   text-shadow: 0 0 6px var(--c-amber); }
+    .ascii-cell.trig-on[data-l="2"] { color: var(--c-cyan);    text-shadow: 0 0 6px var(--c-cyan); }
+    .ascii-cell.trig-on[data-l="3"] { color: var(--c-green);   text-shadow: 0 0 6px var(--c-green); }
 
-    /* Active Step Trigger Colors per Column Lane */
-    .step-btn.trig-on[data-vcolor="0"] .step-led { background: var(--c-neutral); box-shadow: 0 0 6px var(--c-neutral); }
-    .step-btn.trig-on[data-vcolor="1"] .step-led { background: var(--c-amber);   box-shadow: 0 0 6px var(--c-amber); }
-    .step-btn.trig-on[data-vcolor="2"] .step-led { background: var(--c-cyan);    box-shadow: 0 0 6px var(--c-cyan); }
-    .step-btn.trig-on[data-vcolor="3"] .step-led { background: var(--c-green);   box-shadow: 0 0 6px var(--c-green); }
+    .ascii-cell.has-plock {
+        color: var(--c-red) !important;
+        text-shadow: 0 0 8px var(--c-red) !important;
+    }
+    .ascii-cell.playhead {
+        color: #fff !important;
+        background: rgba(255,255,255,0.16);
+        text-shadow: 0 0 8px #fff;
+    }
+    .ascii-cell.mod-editing {
+        color: #fff !important;
+        background: rgba(255, 68, 68, 0.45) !important;
+        box-shadow: 0 0 8px var(--c-red);
+    }
 
-    .step-btn.trig-on { background: #161616; border-color: #555; }
-    .step-btn.has-plock .step-plock-ind { background: var(--c-red); box-shadow: 0 0 5px var(--c-red); }
-    .step-btn.playhead { border-color: #ffffff !important; background: #222; }
-    .step-btn.editing { border: 1px solid var(--c-red) !important; box-shadow: 0 0 10px rgba(255,68,68,0.7); background: #280a0a; }
-    .step-btn.editing .step-num { color: var(--c-red); font-weight: 600; }
-
-    /* VOTIVE CANDLE ALTAR ASCII HORIZON */
-    #ascii-bed-wrap {
-        width: 100%;
+    #ascii-bed {
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 9px;
+        line-height: 9px;
+        letter-spacing: 0px;
+        white-space: pre;
+        margin: 0;
         height: 64px;
-        background: #040404;
-        border: 1px solid #222;
         display: flex;
         align-items: center;
         justify-content: center;
         overflow: hidden;
-        box-sizing: border-box;
-    }
-    #ascii-bed {
-        font-family: 'Courier New', Courier, monospace;
-        font-size: 9px;
-        line-height: 9.5px;
-        letter-spacing: 0px;
-        white-space: pre;
-        margin: 0;
         background-image: linear-gradient(90deg, #ffffff, #ff9d00, #00aaff, #00ff44);
         -webkit-background-clip: text;
         background-clip: text;
@@ -261,32 +304,35 @@
         <div class="vertical-text">LITHIC LITURGY ENGINE</div>
     </div>
 
-    <!-- OPTION B: 4-LANE POLYMETRIC ALTAR SEQUENCER SHELF -->
+    <!-- IMMERSIVE 4-LANE ASCII SCANLINE SEQUENCER & VOTIVE ALTAR -->
     <div id="seq-shelf">
         <div class="seq-bar">
             <div class="seq-section">
-                <span class="seq-title">ALTAR SEQ</span>
-                <button class="seq-btn v-sel active" data-v="0">GLOBAL</button>
-                <button class="seq-btn v-sel" data-v="1">I. INVOC</button>
-                <button class="seq-btn v-sel" data-v="2">II. SANC</button>
-                <button class="seq-btn v-sel" data-v="3">III. FAKT</button>
+                <span class="seq-title">ALTAR MATRIX</span>
+                <button class="seq-btn v-sel active" data-v="0" title="Lane A: Swell & Harmonic Shimmer Pulse + Any Param Locks">A. SWELL</button>
+                <button class="seq-btn v-sel" data-v="1" title="Lane B: Sacrificial Drive & Fold Strike + Any Param Locks">B. FOLD</button>
+                <button class="seq-btn v-sel" data-v="2" title="Lane C: Sanctuary Stone Strike + Any Param Locks">C. STONE</button>
+                <button class="seq-btn v-sel" data-v="3" title="Lane D: Kigal Sub-Pillar Thump + Any Param Locks">D. SUB</button>
             </div>
             <div class="seq-section">
-                <button class="seq-btn active" id="btn-seq-on" title="Master Sequencer On/Off bypass">SEQ: ON</button>
-                <button class="seq-btn active" id="btn-hold-mode" title="HOLD: Empty steps sustain locked drone state | REV: Empty steps revert to base dials">MODE: HOLD</button>
-                <button class="seq-btn" id="btn-len" title="Click to cycle 16/32/48/64, Drag vertically for 1-64, or Alt-Click any step pad">LEN: 16</button>
-                <button class="seq-btn" id="btn-view-page" title="Switch active 16-step page view">PG: 1/1</button>
-                <button class="seq-btn" id="btn-clr-locks" title="Clear all parameter locks on active lane">CLR</button>
+                <button class="seq-btn active" id="btn-seq-on" title="Master Sequencer On/Off">SEQ: ON</button>
+                <button class="seq-btn" id="btn-mod-mode" title="MOD OFF: Click steps to add/remove triggers | MOD ON: Click active step to lock/clear any dial">MOD</button>
+                <button class="seq-btn active" id="btn-hold-mode" title="HOLD: Locked dials sustain until next active step | REV: Revert to base dials on empty steps">HOLD</button>
+                <button class="seq-btn" id="btn-len" title="Click to cycle 16/32/48/64, Drag vertically for 1-64, or Alt-Click any step">LEN: 16</button>
+                <button class="seq-btn" id="btn-view-page" title="Switch 16-step page window">PG: 1/1</button>
+                <button class="seq-btn" id="btn-clr-lane" title="MOD ON: Clear locks on lane | MOD OFF: Clear all steps & locks on lane">CLR</button>
                 <div style="display:flex; align-items:center; gap:5px; margin-left:4px; padding-left:6px; border-left:1px solid #333;">
                     <span class="knob-label" style="margin:0; color:var(--c-amber); font-size:9px;">PACE</span>
-                    <svg class="knob-svg" id="seq_pace" data-val="0.35" viewBox="0 0 44 44" style="width:28px; height:28px;"><circle class="knob-bg" cx="22" cy="22" r="18" style="stroke:var(--c-amber);"></circle><line class="knob-indicator" x1="22" y1="22" x2="22" y2="8"></line></svg>
+                    <svg class="knob-svg" id="seq_pace" data-val="0.38" viewBox="0 0 44 44" style="width:28px; height:28px;"><circle class="knob-bg" cx="22" cy="22" r="18" style="stroke:var(--c-amber);"></circle><line class="knob-indicator" x1="22" y1="22" x2="22" y2="8"></line></svg>
                     <span class="knob-label" style="margin:0 0 0 4px; color:var(--c-red); font-size:9px;">DRAG</span>
                     <svg class="knob-svg" id="seq_drag" data-val="0.0" viewBox="0 0 44 44" style="width:28px; height:28px;"><circle class="knob-bg" cx="22" cy="22" r="18" style="stroke:var(--c-red);"></circle><line class="knob-indicator" x1="22" y1="22" x2="22" y2="8"></line></svg>
                 </div>
             </div>
         </div>
-        <div class="seq-steps" id="seq-steps"></div>
-        <div id="ascii-bed-wrap"><div id="ascii-bed"></div></div>
+        <div id="altar-matrix-wrap">
+            <div class="ascii-lanes" id="ascii-lanes"></div>
+            <div id="ascii-bed"></div>
+        </div>
     </div>
 </div>
 
@@ -320,8 +366,37 @@ class SafeDelay {
 class KamenProcessor extends AudioWorkletProcessor {
     constructor() {
         super();
-        this.p = { ALTITUDE: 0.5, INCENSE: 0, VELOCITY: 0.8, GRAVITY: 0.5, LITURGY: 0, OFFER: 0, TITHE: 0, CELLA: 0, ORIGIN: 0, PENANCE: 0, SCHISM: 0, KIGAL: 0.5, KUR: 0.5, SKOL: 0, MUTE_OFFER: 0, seq_pace: 0.35, seq_drag: 0.0 };
-        this.port.onmessage = e => { if (e.data.id && this.p[e.data.id] !== undefined) this.p[e.data.id] = e.data.value; };
+        this.p = { ALTITUDE: 0.5, INCENSE: 0, VELOCITY: 0.8, GRAVITY: 0.5, LITURGY: 0, OFFER: 0, TITHE: 0, CELLA: 0, ORIGIN: 0, PENANCE: 0, SCHISM: 0, KIGAL: 0.5, KUR: 0.5, SKOL: 0, MUTE_OFFER: 0, seq_pace: 0.38, seq_drag: 0.0 };
+        
+        // 4 Liturgical Lane Articulation Envelopes (Make active steps sonically obvious even with 0 locks)
+        this.p_env0 = 0; // Lane A: Harmonic Shimmer & Lung-Swell Bloom
+        this.p_env1 = 0; // Lane B: Sacrificial Gravity & Tithe Fold Strike
+        this.p_env2 = 0; // Lane C: Sanctuary Stone & Comb Choir Strike
+        this.p_env3 = 0; // Lane D: Kigal Sub-Pillar Tectonic Thump
+
+        this.port.onmessage = e => {
+            if (e.data.type === 'lane_pulse') {
+                const l = e.data.lane;
+                if (l === 0) {
+                    this.p_env0 = 1.0;
+                    this.offer_ph = 0.15; // Nudge lung-swell into upward breath
+                } else if (l === 1) {
+                    this.p_env1 = 1.0;
+                    // Re-articulate FRAY sample-and-hold gates
+                    let rt = -0.5 + (this.ruin_glided * 1.2);
+                    this.v_gate1 = (this.noise() > rt) ? 1.0 : 0.0;
+                    this.v_gate2 = (this.noise() > rt) ? 1.0 : 0.0;
+                    this.v_gate3 = (this.noise() > rt) ? 1.0 : 0.0;
+                    this.v_gate4 = (this.noise() > rt) ? 1.0 : 0.0;
+                } else if (l === 2) {
+                    this.p_env2 = 1.0;
+                } else if (l === 3) {
+                    this.p_env3 = 1.0;
+                }
+            } else if (e.data.id && this.p[e.data.id] !== undefined) {
+                this.p[e.data.id] = e.data.value;
+            }
+        };
         
         this.lithic_buffer = new Float32Array(96000);
         this.choir_comb_L = new SafeDelay(4800);
@@ -374,13 +449,21 @@ class KamenProcessor extends AudioWorkletProcessor {
         if (!outL || !outR) return true;
         const sr = sampleRate;
 
-        // DRAG portamento scaling: 0 = instant snappy changes, 1 = deep glacial bend
+        // DRAG portamento scaling: 0 = razor-snappy immediate locks, 1 = deep glacial bend
         let drag = this.clip(this.p.seq_drag, 0, 1);
-        let drag_curve = 1.0 / (1.0 + Math.pow(drag, 2.2) * 60.0);
-        let slew = (drag < 0.01) ? 0.0001 : (0.001 * drag_curve);
-        let glide_fast = (drag < 0.01) ? 0.002 : (0.0002 * (0.1 + 0.9 * drag_curve));
-        let glide_slow = (drag < 0.01) ? 0.001 : (0.0001 * (0.1 + 0.9 * drag_curve));
-        let c_slew = (drag < 0.01) ? 0.25 : (0.05 * (0.02 + 0.98 * drag_curve));
+        let slew, glide_fast, glide_slow, c_slew;
+        if (drag < 0.02) {
+            slew = 0.025;
+            glide_fast = 0.015;
+            glide_slow = 0.008;
+            c_slew = 0.35;
+        } else {
+            let drag_curve = 1.0 / (1.0 + Math.pow(drag, 2.0) * 55.0);
+            slew = 0.002 * drag_curve;
+            glide_fast = 0.0005 * drag_curve;
+            glide_slow = 0.0002 * drag_curve;
+            c_slew = 0.05 * drag_curve;
+        }
 
         // PACE sequencer clock: 0 = Paused, 0.01..1.0 = 15 BPM to 180 BPM
         let pace = this.clip(this.p.seq_pace, 0, 1);
@@ -395,6 +478,12 @@ class KamenProcessor extends AudioWorkletProcessor {
                 }
                 this.prev_seq_ph = this.seq_ph;
             }
+
+            // Decay the 4 lane articulation pulse envelopes
+            this.p_env0 *= 0.9993;
+            this.p_env1 *= 0.9991;
+            this.p_env2 *= 0.9992;
+            this.p_env3 *= 0.9990;
 
             let ALTITUDE = this.p.ALTITUDE;
             let INCENSE = this.p.INCENSE;
@@ -433,7 +522,7 @@ class KamenProcessor extends AudioWorkletProcessor {
             this.ruin_glided = this.ruin_glided + glide_slow * (mute_target - this.ruin_glided);
 
             this.orig_ph = this.wrap(this.orig_ph + (0.3 / sr), 0.0, 1.0);
-            let tape_wow = Math.sin(this.orig_ph * this.twopi) * this.s_orig * 0.02;
+            let tape_wow = Math.sin(this.orig_ph * this.twopi) * (this.s_orig * 0.02 + this.p_env2 * 0.008);
 
             let target_hz = 30.0 * Math.pow(16.0, this.glided_lit);
             let root_hz = target_hz * (1.0 + tape_wow);
@@ -462,17 +551,19 @@ class KamenProcessor extends AudioWorkletProcessor {
             this.drift_ph3 = this.wrap(this.drift_ph3 + (0.23 / sr), 0.0, 1.0);
             this.drift_ph4 = this.wrap(this.drift_ph4 + (0.29 / sr), 0.0, 1.0);
 
-            let d1 = Math.sin(this.drift_ph1 * this.twopi) * this.s_sch * 0.03;
-            let d2 = Math.sin(this.drift_ph2 * this.twopi) * this.s_sch * 0.03;
-            let d3 = Math.sin(this.drift_ph3 * this.twopi) * this.s_sch * 0.03;
-            let d4 = Math.sin(this.drift_ph4 * this.twopi) * this.s_sch * 0.03;
+            let sch_mod = this.s_sch * 0.03 + this.p_env0 * 0.008;
+            let d1 = Math.sin(this.drift_ph1 * this.twopi) * sch_mod;
+            let d2 = Math.sin(this.drift_ph2 * this.twopi) * sch_mod;
+            let d3 = Math.sin(this.drift_ph3 * this.twopi) * sch_mod;
+            let d4 = Math.sin(this.drift_ph4 * this.twopi) * sch_mod;
 
             this.ph1 = this.wrap(this.ph1 + (root_hz * this.r1 * (1.0 + d1)) / sr, 0.0, 1.0);
             this.ph2 = this.wrap(this.ph2 + (root_hz * this.r2 * (1.0 + d2)) / sr, 0.0, 1.0);
             this.ph3 = this.wrap(this.ph3 + (root_hz * this.r3 * (1.0 + d3)) / sr, 0.0, 1.0);
             this.ph4 = this.wrap(this.ph4 + (root_hz * this.r4 * (1.0 + d4)) / sr, 0.0, 1.0);
 
-            let grav_drive = 1.0 + (this.grav_glided * 10.0);
+            // Lane B pulse (p_env1) injects immediate harmonic drive & wavefold strike
+            let grav_drive = 1.0 + (this.grav_glided * 10.0) + (this.p_env1 * 5.5);
             let o1 = Math.tanh(Math.sin(this.ph1 * this.twopi) * grav_drive);
             let o2 = Math.tanh(Math.sin(this.ph2 * this.twopi) * grav_drive);
             let o3 = Math.tanh(Math.sin(this.ph3 * this.twopi) * grav_drive);
@@ -509,12 +600,12 @@ class KamenProcessor extends AudioWorkletProcessor {
 
             this.offer_ph = this.wrap(this.offer_ph + (0.5 / sr), 0.0, 1.0);
             let lung_swell = Math.sin(this.offer_ph * this.twopi) * 0.5 + 0.5;
-            this.last_swell = lung_swell;
+            this.last_swell = Math.min(1.0, lung_swell + this.p_env0 * 0.45);
 
             let synergy = this.s_off * this.grav_glided;
-            let tithe_pwm = this.clip((this.s_tithe - 0.3) / 0.4, 0.0, 1.0) * 0.4;
+            let tithe_pwm = this.clip((this.s_tithe - 0.3) / 0.4, 0.0, 1.0) * 0.4 + (this.p_env1 * 0.15);
             let base_fold = this.clip((this.s_tithe - 0.7) / 0.3, 0.0, 1.0) * 2.0;
-            let active_fold = base_fold + (lung_swell * synergy * 4.0);
+            let active_fold = base_fold + (lung_swell * synergy * 4.0) + (this.p_env1 * 1.4);
 
             o1 = Math.sin((o1 + tithe_pwm) * (1.0 + active_fold));
             o2 = Math.sin((o2 + tithe_pwm) * (1.0 + active_fold));
@@ -524,7 +615,8 @@ class KamenProcessor extends AudioWorkletProcessor {
             let pan_c = 1.0 - this.s_sch;
             let pan_s = this.s_sch;
 
-            let drone_amp = 1.0 * (1.0 - (this.s_off * (1.0 - this.grav_glided))) + lung_swell * (this.s_off * (1.0 - this.grav_glided));
+            let base_drone_amp = 1.0 * (1.0 - (this.s_off * (1.0 - this.grav_glided))) + lung_swell * (this.s_off * (1.0 - this.grav_glided));
+            let drone_amp = base_drone_amp * (1.0 + this.p_env0 * 0.55);
             let core_L = (o1 * (pan_c + pan_s) + o2 * pan_c + o3 * (pan_c + pan_s) + o4 * pan_c) * 0.25 * drone_amp;
             let core_R = (o1 * pan_c + o2 * (pan_c + pan_s) + o3 * pan_c + o4 * (pan_c + pan_s)) * 0.25 * drone_amp;
 
@@ -546,9 +638,11 @@ class KamenProcessor extends AudioWorkletProcessor {
             core_R = this.muffle_R;
             let mono_core = (core_L + core_R) * 0.5;
 
-            this.ph0 = this.wrap(this.ph0 + (root_hz * 0.5) / sr, 0.0, 1.0);
-            let kigal_drive = 1.0 + (this.s_kig * 5.0);
-            let kigal_pillar = Math.tanh(Math.sin(this.ph0 * this.twopi) * kigal_drive) * this.s_kig * 0.8;
+            // Lane D pulse (p_env3) drives a deep KIGAL sub-oscillator thump
+            this.ph0 = this.wrap(this.ph0 + (root_hz * 0.5 * (1.0 + this.p_env3 * 0.25)) / sr, 0.0, 1.0);
+            let kigal_drive = 1.0 + (this.s_kig * 5.0) + (this.p_env3 * 4.5);
+            let kigal_amp = Math.min(1.2, this.s_kig * 0.8 + this.p_env3 * 0.55);
+            let kigal_pillar = Math.tanh(Math.sin(this.ph0 * this.twopi) * kigal_drive) * kigal_amp;
 
             this.kur_glided = this.kur_glided + glide_slow * (this.s_kur - this.kur_glided);
             let room_wave = 48000.0 / root_hz;
@@ -577,7 +671,7 @@ class KamenProcessor extends AudioWorkletProcessor {
             let cavern_read_L = cavern_read_A * (1.0 - this.s_cella) + amber_read * this.s_cella;
             let cavern_read_R = cavern_read_B * (1.0 - this.s_cella) + amber_read * this.s_cella;
 
-            let skol_coef = this.s_skol * 0.7;
+            let skol_coef = Math.min(0.75, this.s_skol * 0.7 + this.p_env3 * 0.25);
             let v_L1 = cavern_read_L + (skol_coef * this.diff_L1.read(411)); let out_L1 = this.diff_L1.read(411) - (skol_coef * v_L1); this.diff_L1.write(v_L1);
             let v_L2 = out_L1 + (skol_coef * this.diff_L2.read(613)); let out_L2 = this.diff_L2.read(613) - (skol_coef * v_L2); this.diff_L2.write(v_L2);
             cavern_read_L = out_L2;
@@ -605,20 +699,23 @@ class KamenProcessor extends AudioWorkletProcessor {
             this.choir_lp_L = this.choir_lp_L + 0.15 * (c_read_L - this.choir_lp_L);
             this.choir_lp_R = this.choir_lp_R + 0.15 * (c_read_R - this.choir_lp_R);
 
-            let choir_in_L = final_abyss_L + (this.choir_lp_L * 0.95);
-            let choir_in_R = final_abyss_R + (this.choir_lp_R * 0.95);
+            // Lane C pulse (p_env2) strikes the choir comb & cavern stone loop
+            let stone_strike = mono_core * this.p_env2 * 1.35;
+            let choir_in_L = final_abyss_L + stone_strike + (this.choir_lp_L * 0.95);
+            let choir_in_R = final_abyss_R + stone_strike + (this.choir_lp_R * 0.95);
 
             this.choir_comb_L.write(Math.tanh(choir_in_L));
             this.choir_comb_R.write(Math.tanh(choir_in_R));
 
-            let choir_out_L = this.choir_lp_L * this.s_pen * 0.5;
-            let choir_out_R = this.choir_lp_R * this.s_pen * 0.5;
+            let pen_active = Math.min(1.0, this.s_pen + this.p_env2 * 0.55);
+            let choir_out_L = this.choir_lp_L * pen_active * 0.5;
+            let choir_out_R = this.choir_lp_R * pen_active * 0.5;
 
             let feedback_inject_L = Math.tanh(choir_out_L * 0.8);
             let feedback_inject_R = Math.tanh(choir_out_R * 0.8);
 
             let buffer_memory = this.lithic_buffer[Math.floor(this.write_idx)] * this.s_cella * 0.98;
-            let new_stone = mono_core + ((feedback_inject_L + feedback_inject_R) * 0.5) + buffer_memory;
+            let new_stone = mono_core * (1.0 + this.p_env2 * 0.8) + ((feedback_inject_L + feedback_inject_R) * 0.5) + buffer_memory;
             this.lithic_buffer[Math.floor(this.write_idx)] = isNaN(new_stone) ? 0 : new_stone;
             this.write_idx = this.wrap(this.write_idx + 1, 0, 96000);
 
@@ -640,7 +737,12 @@ class KamenProcessor extends AudioWorkletProcessor {
                 1.0 - this.ruin_glided + this.g_slew3 * this.ruin_glided,
                 1.0 - this.ruin_glided + this.g_slew4 * this.ruin_glided
             ];
-            this.port.postMessage({ type: 'telemetry', gates: eff_gates, swell: this.last_swell });
+            this.port.postMessage({
+                type: 'telemetry',
+                gates: eff_gates,
+                swell: this.last_swell,
+                pulses: [this.p_env0, this.p_env1, this.p_env2, this.p_env3]
+            });
             this.fc = 0;
         }
         return true;
@@ -657,24 +759,28 @@ let scopeMode = 0; // 0 = Scope, 1 = Seismograph, 2 = Liturgical BPM / Step / Ch
 let seismoHistory = new Array(canvas.width).fill(0);
 let liveGates = [1, 1, 1, 1];
 let liveSwell = 0.5;
+let livePulses = [0, 0, 0, 0];
 canvas.addEventListener('click', () => { scopeMode = (scopeMode + 1) % 3; });
 
-// --- OPTION B: 4-LANE POLYMETRIC ALTAR STATE ---
-const laneParamMap = [
-    ['ALTITUDE', 'INCENSE', 'VELOCITY'],
-    ['LITURGY', 'GRAVITY', 'MUTE_OFFER', 'OFFER', 'TITHE'],
-    ['CELLA', 'ORIGIN', 'PENANCE', 'SCHISM'],
-    ['KIGAL', 'SKOL', 'KUR']
+// --- 4-LANE POLYMETRIC ALTAR MATRIX (ALL LANES START EMPTY & CAN MODULATE ANY DIAL) ---
+const allSynthParams = [
+    'ALTITUDE', 'INCENSE', 'VELOCITY',
+    'LITURGY', 'GRAVITY', 'MUTE_OFFER', 'OFFER', 'TITHE',
+    'CELLA', 'ORIGIN', 'PENANCE', 'SCHISM',
+    'KIGAL', 'SKOL', 'KUR'
 ];
 const romanNumerals = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI'];
+const laneLabels = ['A.', 'B.', 'C.', 'D.'];
+const laneColors = ['var(--c-neutral)', 'var(--c-amber)', 'var(--c-cyan)', 'var(--c-green)'];
 
 let laneLengths = [16, 16, 16, 16];
-let playSteps = [0, 0, 0, 0];
+let playSteps = [-1, -1, -1, -1];
 let viewPage = 0;
 let activeTrack = 0;
 let seqOn = true;
-let holdMode = true; 
-let editingStep = null; // Direct touch step selection for editing
+let modMode = false; // MOD OFF = Step input/delete | MOD ON = Parameter lock edit/delete
+let holdMode = true; // HOLD = Sustain locked values across empty steps | REV = Revert to baseParams on empty steps
+let editingStep = null;
 
 // Base Kit State & Live Active Values
 const baseParams = {};
@@ -684,9 +790,10 @@ document.querySelectorAll('.knob-svg').forEach(k => {
     liveParams[k.id] = parseFloat(k.dataset.val);
 });
 
-const seqTracks = Array.from({ length: 4 }, (_, v) =>
-    Array.from({ length: 64 }, (_, s) => ({
-        trig: (v === 0 && s % 8 === 0) || (v === 1 && s % 4 === 0) || (v === 2 && s % 8 === 4) || (v === 3 && s % 16 === 0),
+// Initialize ALL 4 lanes completely empty (0 active steps by default!)
+const seqTracks = Array.from({ length: 4 }, () =>
+    Array.from({ length: 64 }, () => ({
+        trig: false,
         locks: {}
     }))
 );
@@ -695,7 +802,7 @@ function drawScope() {
     requestAnimationFrame(drawScope); ctx.fillStyle = '#050505'; ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     if (scopeMode === 2) {
-        let pace = baseParams['seq_pace'] !== undefined ? baseParams['seq_pace'] : 0.35;
+        let pace = baseParams['seq_pace'] !== undefined ? baseParams['seq_pace'] : 0.38;
         let bpm = pace > 0.01 ? Math.round(15 + pace * 165) : 0;
         let altVal = liveParams['ALTITUDE'] !== undefined ? liveParams['ALTITUDE'] : 0.5;
         let chordIdx = Math.floor(altVal * 10.999);
@@ -704,9 +811,9 @@ function drawScope() {
         ctx.fillText(bpm > 0 && seqOn ? `${bpm} BPM  |  CHORD ${romanNumerals[chordIdx]}` : `SEQ OFF | CHORD ${romanNumerals[chordIdx]}`, 6, 16);
         ctx.fillStyle = '#bbbbbb';
         ctx.font = '400 10px Oswald, sans-serif';
-        let curStep = playSteps[activeTrack] + 1;
+        let curStep = Math.max(1, playSteps[activeTrack] + 1);
         let curLen = laneLengths[activeTrack];
-        ctx.fillText(`LANE ${activeTrack + 1} STEP ${String(curStep).padStart(2, '0')} / ${String(curLen).padStart(2, '0')}`, 6, 33);
+        ctx.fillText(`LANE ${laneLabels[activeTrack]} STEP ${String(curStep).padStart(2, '0')} / ${String(curLen).padStart(2, '0')}`, 6, 33);
         return;
     }
 
@@ -745,16 +852,16 @@ function setKnobValue(knob, val, mode = 'user') {
     }
 
     if (mode === 'user') {
-        if (editingStep !== null) {
-            // Direct touch P-lock: writing to the selected step
+        if (modMode && editingStep !== null) {
+            // MOD ON + Focused Step: Any dial on the entire machine locks to this step!
             seqTracks[activeTrack][editingStep].locks[knob.id] = val;
             seqTracks[activeTrack][editingStep].trig = true;
             knob.classList.add('plocked');
             liveParams[knob.id] = val;
             sendParam(knob.id, val);
-            renderSequencerSteps();
+            renderAsciiLanes();
         } else {
-            // Global Kit Edit
+            // Normal Kit Edit: update base state and live sound
             baseParams[knob.id] = val;
             liveParams[knob.id] = val;
             knob.classList.remove('mod-active');
@@ -815,6 +922,7 @@ async function initAudio() {
         } else if (e.data.type === 'telemetry') {
             liveGates = e.data.gates;
             liveSwell = e.data.swell;
+            if (e.data.pulses) livePulses = e.data.pulses;
         }
     };
     
@@ -920,8 +1028,8 @@ document.getElementById('preset-list').addEventListener('change', (e) => {
     if(state) { for(let key in state) { let el = document.getElementById(key); if(el && el.classList.contains('knob-svg')) setKnobValue(el, state[key], 'preset'); } }
 });
 
-// --- DIRECT TOUCH POLYMETRIC ALTAR SEQUENCER ---
-const stepsContainer = document.getElementById('seq-steps');
+// --- 4-LANE ASCII SCANLINE SEQUENCER & MOD MATRIX ---
+const asciiLanesContainer = document.getElementById('ascii-lanes');
 const lenBtn = document.getElementById('btn-len');
 const pageBtn = document.getElementById('btn-view-page');
 
@@ -933,11 +1041,29 @@ function updateLenUI() {
     pageBtn.textContent = `PG: ${viewPage + 1}/${maxPages}`;
 }
 
+function selectLane(v) {
+    activeTrack = v;
+    document.querySelectorAll('.v-sel').forEach(b => b.classList.toggle('active', parseInt(b.dataset.v) === v));
+    if (modMode) {
+        // Focus first active step on the newly selected lane (if any)
+        const offset = viewPage * 16;
+        editingStep = null;
+        for (let i = 0; i < 16; i++) {
+            if (seqTracks[activeTrack][offset + i].trig) { editingStep = offset + i; break; }
+        }
+    } else {
+        editingStep = null;
+    }
+    updateLenUI();
+    syncKnobsToEditState();
+    renderAsciiLanes();
+}
+
 function syncKnobsToEditState() {
     document.querySelectorAll('.knob-svg').forEach(k => {
         if (k.id === 'seq_pace' || k.id === 'seq_drag') return;
         k.classList.remove('plocked');
-        if (editingStep !== null) {
+        if (modMode && editingStep !== null) {
             const locks = seqTracks[activeTrack][editingStep].locks;
             if (locks[k.id] !== undefined) {
                 k.classList.add('plocked');
@@ -953,73 +1079,119 @@ function syncKnobsToEditState() {
     });
 }
 
-function renderSequencerSteps() {
-    stepsContainer.innerHTML = '';
+function renderAsciiLanes() {
+    asciiLanesContainer.innerHTML = '';
     const offset = viewPage * 16;
-    const activeLen = laneLengths[activeTrack];
 
-    for (let i = 0; i < 16; i++) {
-        const stepIdx = offset + i;
-        const stepObj = seqTracks[activeTrack][stepIdx];
-        const btn = document.createElement('div');
-        btn.className = 'step-btn';
-        btn.dataset.vcolor = activeTrack;
+    for (let l = 0; l < 4; l++) {
+        const row = document.createElement('div');
+        row.className = 'ascii-lane-row' + (l === activeTrack ? ' selected-lane' : '');
 
-        if (stepIdx >= activeLen) btn.classList.add('out-of-bounds');
-        if (stepObj.trig) btn.classList.add('trig-on');
-        if (Object.keys(stepObj.locks).length > 0) btn.classList.add('has-plock');
-        if (stepIdx === playSteps[activeTrack] && isPlaying && seqOn) btn.classList.add('playhead');
-        if (stepIdx === editingStep) btn.classList.add('editing');
+        const tag = document.createElement('div');
+        tag.className = 'lane-tag';
+        tag.style.color = laneColors[l];
+        tag.textContent = laneLabels[l];
+        tag.title = `Select Lane ${laneLabels[l]}`;
+        tag.addEventListener('click', () => selectLane(l));
+        row.appendChild(tag);
 
-        btn.innerHTML = `<span class="step-num">${stepIdx + 1}</span><div class="step-led"></div><div class="step-plock-ind"></div>`;
+        const activeLen = laneLengths[l];
+        for (let i = 0; i < 16; i++) {
+            const stepIdx = offset + i;
+            const stepObj = seqTracks[l][stepIdx];
+            const cell = document.createElement('div');
+            cell.className = 'ascii-cell';
+            cell.dataset.l = l;
 
-        // Direct Touch Workflow: Click once to select/edit, Click again to deselect, Double-click to clear locks
-        btn.addEventListener('click', e => {
-            if (e.altKey) {
-                laneLengths[activeTrack] = stepIdx + 1;
-                if (playSteps[activeTrack] >= laneLengths[activeTrack]) playSteps[activeTrack] = 0;
-                updateLenUI();
-                renderSequencerSteps();
-                return;
-            }
+            const hasLocks = Object.keys(stepObj.locks).length > 0;
+            const isPlayhead = isPlaying && seqOn && playSteps[l] === stepIdx;
+            const isEditing = modMode && l === activeTrack && editingStep === stepIdx;
 
-            if (editingStep === stepIdx) {
-                // Click again to deselect
-                editingStep = null;
-                syncKnobsToEditState();
+            if (stepIdx >= activeLen) cell.classList.add('out-bounds');
+            if (stepObj.trig) cell.classList.add('trig-on');
+            if (hasLocks) cell.classList.add('has-plock');
+            if (isPlayhead) cell.classList.add('playhead');
+            if (isEditing) cell.classList.add('mod-editing');
+
+            // ASCII Symbol representation
+            if (isEditing) {
+                cell.textContent = '[#]';
+            } else if (isPlayhead) {
+                cell.textContent = stepObj.trig ? '[|]' : ' · ';
+            } else if (stepObj.trig) {
+                cell.textContent = hasLocks ? ' ‡ ' : ' | ';
             } else {
-                // Select this step for direct dial editing & toggle trigger
-                editingStep = stepIdx;
-                stepObj.trig = true;
-                syncKnobsToEditState();
+                cell.textContent = ' · ';
             }
-            renderSequencerSteps();
-        });
 
-        btn.addEventListener('dblclick', () => {
-            stepObj.locks = {};
-            if (editingStep === stepIdx) {
-                editingStep = null;
-                syncKnobsToEditState();
-            }
-            renderSequencerSteps();
-        });
+            cell.addEventListener('click', e => {
+                if (activeTrack !== l) {
+                    activeTrack = l;
+                    document.querySelectorAll('.v-sel').forEach(b => b.classList.toggle('active', parseInt(b.dataset.v) === l));
+                    updateLenUI();
+                }
 
-        stepsContainer.appendChild(btn);
+                // Alt-Click sets the polymetric loop length for this lane
+                if (e.altKey) {
+                    laneLengths[l] = stepIdx + 1;
+                    if (playSteps[l] >= laneLengths[l]) playSteps[l] = 0;
+                    updateLenUI();
+                    renderAsciiLanes();
+                    return;
+                }
+
+                if (!modMode) {
+                    // STEP EDIT MODE (MOD OFF): Cleanly toggle step ON or OFF (and clear locks when turned off)
+                    stepObj.trig = !stepObj.trig;
+                    if (!stepObj.trig) {
+                        stepObj.locks = {};
+                    } else if (kamenNode) {
+                        // Audition the lane's sonic pulse immediately on click!
+                        kamenNode.port.postMessage({ type: 'lane_pulse', lane: l });
+                    }
+                    editingStep = null;
+                    renderAsciiLanes();
+                } else {
+                    // MOD EDIT MODE (MOD ON): Select active step to lock dials, or click focused step again to clear its locks
+                    if (editingStep === stepIdx) {
+                        stepObj.locks = {};
+                        syncKnobsToEditState();
+                    } else {
+                        stepObj.trig = true; // Ensure step is active so locks can be heard
+                        editingStep = stepIdx;
+                        syncKnobsToEditState();
+                    }
+                    renderAsciiLanes();
+                }
+            });
+
+            cell.addEventListener('dblclick', () => {
+                if (modMode) {
+                    stepObj.locks = {};
+                    syncKnobsToEditState();
+                    renderAsciiLanes();
+                }
+            });
+
+            row.appendChild(cell);
+        }
+
+        const lenTag = document.createElement('div');
+        lenTag.className = 'lane-len-tag';
+        lenTag.textContent = `/${ String(activeLen).padStart(2, '0') }`;
+        lenTag.title = 'Click to select lane';
+        lenTag.addEventListener('click', () => selectLane(l));
+        row.appendChild(lenTag);
+
+        asciiLanesContainer.appendChild(row);
     }
 }
 updateLenUI();
-renderSequencerSteps();
+renderAsciiLanes();
 
 document.querySelectorAll('.v-sel').forEach(btn => {
     btn.addEventListener('click', e => {
-        document.querySelectorAll('.v-sel').forEach(b => b.classList.remove('active'));
-        e.target.classList.add('active');
-        activeTrack = parseInt(e.target.dataset.v);
-        editingStep = null;
-        updateLenUI();
-        syncKnobsToEditState();
-        renderSequencerSteps();
+        selectLane(parseInt(e.target.dataset.v));
     });
 });
 
@@ -1027,12 +1199,35 @@ document.getElementById('btn-seq-on').addEventListener('click', e => {
     seqOn = !seqOn;
     e.target.classList.toggle('active', seqOn);
     e.target.textContent = seqOn ? 'SEQ: ON' : 'SEQ: OFF';
+    if (!seqOn) {
+        // Revert all parameters to base panel positions when sequencer is bypassed
+        for (let pId of allSynthParams) {
+            applyTargetParam(pId, baseParams[pId], false);
+        }
+    }
+    renderAsciiLanes();
+});
+
+document.getElementById('btn-mod-mode').addEventListener('click', e => {
+    modMode = !modMode;
+    e.target.classList.toggle('active', modMode);
+    if (modMode) {
+        // Auto-focus first active step on the current lane (if one exists)
+        const offset = viewPage * 16;
+        editingStep = null;
+        for (let i = 0; i < 16; i++) {
+            if (seqTracks[activeTrack][offset + i].trig) { editingStep = offset + i; break; }
+        }
+    } else {
+        editingStep = null;
+    }
+    syncKnobsToEditState();
+    renderAsciiLanes();
 });
 
 document.getElementById('btn-hold-mode').addEventListener('click', e => {
     holdMode = !holdMode;
     e.target.classList.toggle('active', holdMode);
-    e.target.textContent = holdMode ? 'MODE: HOLD' : 'MODE: REV';
 });
 
 // LEN Button: Click to cycle 16/32/48/64 OR Drag vertically for any 1..64 polymetric length
@@ -1050,7 +1245,7 @@ window.addEventListener('pointermove', e => {
         laneLengths[activeTrack] = newLen;
         if (playSteps[activeTrack] >= newLen) playSteps[activeTrack] = 0;
         updateLenUI();
-        renderSequencerSteps();
+        renderAsciiLanes();
     }
 });
 window.addEventListener('pointerup', e => {
@@ -1062,7 +1257,7 @@ window.addEventListener('pointerup', e => {
         laneLengths[activeTrack] = cur < 16 ? 16 : (cur < 32 ? 32 : (cur < 48 ? 48 : (cur < 64 ? 64 : 16)));
         if (playSteps[activeTrack] >= laneLengths[activeTrack]) playSteps[activeTrack] = 0;
         updateLenUI();
-        renderSequencerSteps();
+        renderAsciiLanes();
     }
 });
 
@@ -1070,19 +1265,23 @@ pageBtn.addEventListener('click', () => {
     let maxPages = Math.max(1, Math.ceil(laneLengths[activeTrack] / 16));
     viewPage = (viewPage + 1) % maxPages;
     updateLenUI();
-    renderSequencerSteps();
+    renderAsciiLanes();
 });
 
-document.getElementById('btn-clr-locks').addEventListener('click', () => {
-    for (let s = 0; s < 64; s++) seqTracks[activeTrack][s].locks = {};
+document.getElementById('btn-clr-lane').addEventListener('click', () => {
+    for (let s = 0; s < 64; s++) {
+        seqTracks[activeTrack][s].locks = {};
+        if (!modMode) seqTracks[activeTrack][s].trig = false;
+    }
+    editingStep = null;
     syncKnobsToEditState();
-    renderSequencerSteps();
+    renderAsciiLanes();
 });
 
 function applyTargetParam(kId, targetVal, isLocked) {
     liveParams[kId] = targetVal;
     sendParam(kId, targetVal);
-    if (editingStep === null) {
+    if (!modMode || editingStep === null) {
         const knobEl = document.getElementById(kId);
         if (knobEl) {
             setKnobVisual(knobEl, targetVal);
@@ -1094,37 +1293,44 @@ function applyTargetParam(kId, targetVal, isLocked) {
 function advanceSequencer() {
     if (!seqOn) return;
 
-    for (let v = 0; v < 4; v++) {
-        playSteps[v] = (playSteps[v] + 1) % laneLengths[v];
-        const stepObj = seqTracks[v][playSteps[v]];
-        const colParams = laneParamMap[v];
+    let anyTrig = false;
+    let combinedLocks = {};
+
+    for (let l = 0; l < 4; l++) {
+        playSteps[l] = (playSteps[l] + 1) % laneLengths[l];
+        const stepObj = seqTracks[l][playSteps[l]];
 
         if (stepObj.trig) {
+            anyTrig = true;
+            // 1. Fire the lane's built-in DSP liturgical articulation pulse!
+            if (kamenNode) {
+                kamenNode.port.postMessage({ type: 'lane_pulse', lane: l });
+            }
+            // 2. Collect any parameter locks on this lane's step (any lane can control any dial)
             for (let kId in stepObj.locks) {
-                applyTargetParam(kId, stepObj.locks[kId], true);
+                combinedLocks[kId] = stepObj.locks[kId];
             }
-            for (let pId of colParams) {
-                if (stepObj.locks[pId] === undefined) {
-                    applyTargetParam(pId, baseParams[pId], false);
-                }
-            }
-        } else if (!holdMode) {
-            for (let pId of colParams) {
+        }
+    }
+
+    // Apply collected parameter locks across the machine
+    for (let kId in combinedLocks) {
+        applyTargetParam(kId, combinedLocks[kId], true);
+    }
+
+    // If HOLD is OFF (REV mode) and no active step is locking a parameter on this tick, revert unlocked dials to baseParams
+    if (!holdMode) {
+        for (let pId of allSynthParams) {
+            if (combinedLocks[pId] === undefined) {
                 applyTargetParam(pId, baseParams[pId], false);
             }
         }
     }
 
-    const stepButtons = stepsContainer.children;
-    const offset = viewPage * 16;
-    for (let i = 0; i < 16; i++) {
-        if (stepButtons[i]) {
-            stepButtons[i].classList.toggle('playhead', (offset + i) === playSteps[activeTrack]);
-        }
-    }
+    renderAsciiLanes();
 }
 
-// --- REDESIGNED VOTIVE CANDLE ALTAR ASCII ENGINE (Smoky Tapers & Kigal Pillar) ---
+// --- VOTIVE CANDLE ALTAR + VERTICAL SCANLINE RAYS ---
 const asciiBed = document.getElementById('ascii-bed');
 let candlePhase = 0;
 
@@ -1160,6 +1366,7 @@ function renderAsciiAltar() {
     const kig = liveParams['KIGAL'] !== undefined ? liveParams['KIGAL'] : 0.5;
     const offer = liveParams['OFFER'] || 0;
 
+    // Chaos index intentionally excludes ALTITUDE (interval selector)
     const rawChaos = (Math.max(0, grav - 0.35) * 1.1 + inc * 1.3 + tithe * 1.2 + orig * 1.0 + pen * 1.1 + sch * 1.2 + skol * 0.9) / 5.2;
     const chaos = Math.min(1.0, Math.max(0.0, rawChaos));
 
@@ -1170,16 +1377,40 @@ function renderAsciiAltar() {
     const rows = 6;
     const grid = Array.from({ length: rows }, () => new Array(cols).fill(' '));
 
+    // 1. Project Vertical Sequencer Scanlines from Active Steps into the Altar
+    if (isPlaying && seqOn) {
+        const offset = viewPage * 16;
+        const scanSym = ['|', '*', ':', '!'];
+        for (let l = 0; l < 4; l++) {
+            let pStep = playSteps[l];
+            if (pStep >= offset && pStep < offset + 16) {
+                let colSlot = pStep - offset;
+                let scanX = Math.round(6 + (colSlot + 0.5) * ((cols - 12) / 16));
+                let isTrig = seqTracks[l][pStep] && seqTracks[l][pStep].trig;
+                if (isTrig) {
+                    // Active step shoots a liturgical beam down into the candle bed
+                    for (let r = 0; r < rows; r++) {
+                        if (scanX >= 0 && scanX < cols) grid[r][scanX] = r % 2 === 0 ? scanSym[l] : ':';
+                    }
+                } else if (l === activeTrack && grid[0][scanX] === ' ') {
+                    grid[0][scanX] = '.';
+                }
+            }
+        }
+    }
+
+    // 2. Render 5 Votive Candles (4 Choir Tapers + 1 Central Kigal Pillar)
+    const pulseBoost = (livePulses[0] + livePulses[1] + livePulses[2] + livePulses[3]) * 0.35;
     const candles = [
         { x: 18,  w: 3, gate: liveGates[0], isSub: false, seed: 1.1 },
         { x: 42,  w: 3, gate: liveGates[1], isSub: false, seed: 2.7 },
-        { x: 68,  w: 5, gate: Math.min(1, kig * 1.4), isSub: true,  seed: 4.3 },
+        { x: 68,  w: 5, gate: Math.min(1, kig * 1.4 + livePulses[3] * 0.8), isSub: true,  seed: 4.3 },
         { x: 94,  w: 3, gate: liveGates[2], isSub: false, seed: 5.9 },
         { x: 118, w: 3, gate: liveGates[3], isSub: false, seed: 7.4 }
     ];
 
     const breath = 1.0 - (offer * 0.35) + (liveSwell * offer * 0.5);
-    const effectiveVel = Math.min(1.0, vel * breath);
+    const effectiveVel = Math.min(1.0, vel * breath + pulseBoost);
     const maxFlameRows = Math.max(0, Math.min(4, Math.round(effectiveVel * 4.2)));
 
     for (let idx = 0; idx < candles.length; idx++) {
@@ -1187,7 +1418,7 @@ function renderAsciiAltar() {
         const gate = c.gate;
         const windBend = Math.sin(candlePhase * 0.85 + c.seed) * (inc * 5.0 + sch * 6.0 + orig * 3.5);
 
-        // 1. Draw Solid Wax Pillar / Taper Body (Rows 4 & 5)
+        // Wax Pillar / Taper Body (Rows 4 & 5)
         for (let r = 4; r <= 5; r++) {
             let meltShift = chaos > 0.3 ? Math.round(Math.sin(candlePhase * 0.5 + r * 2 + c.seed) * chaos * 2.5) : 0;
             let bx = c.x + meltShift;
@@ -1206,9 +1437,8 @@ function renderAsciiAltar() {
             }
         }
 
-        // 2. Draw Flickering Flame or Rising FRAY Smoke (Rows 0 to 3)
+        // Flickering Flame or Rising FRAY Smoke (Rows 0 to 3)
         if (gate < 0.35 || maxFlameRows === 0) {
-            // Extinguished/Frayed voice -> curling rising smoke wisps ('~', ':', "'")
             for (let fr = 1; fr <= 3; fr++) {
                 let r = 4 - fr;
                 let drift = Math.round(Math.sin(candlePhase * 1.2 + fr * 1.5 + c.seed) * (1.5 + inc * 3.5));
@@ -1218,7 +1448,6 @@ function renderAsciiAltar() {
                 }
             }
         } else {
-            // Active burning flame
             for (let fr = 1; fr <= maxFlameRows; fr++) {
                 let r = 4 - fr;
                 let heightRatio = fr / maxFlameRows;
